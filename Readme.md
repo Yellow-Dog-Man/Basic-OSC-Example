@@ -3,7 +3,7 @@ A quick debugging application, designed to connect to Resonite's OSC_Reciever co
 
 Feel free to use it to validate if your network setup will allow OSC connectivity or as a jumping off point for further development.
 
-## Testing
+## Sending
 1. In Resonite, attach an OSC_Reciever Component to an Empty Object (Component can be found in Network/OSC)
 1. Specify the network port in the port field of the component.
 1. Specify the user in the user field of the component.
@@ -15,6 +15,10 @@ Feel free to use it to validate if your network setup will allow OSC connectivit
     - e.g. `OSCTester.exe 127.0.0.1 3001`
 
 You should then see the OSC Value counting upwards with the Unix Epoch in Seconds, which is generated from the application.
+
+## Receiving
+- You can add a 3rd argument to send/receive at the same time: `OSCTester.exe 127.0.0.1 3001 3002`.
+- You can only specify 1 argument to ONLY receive: `OSCTester.exe 3001`
 
 
 ## Screenshots
