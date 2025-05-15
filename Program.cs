@@ -9,6 +9,35 @@ internal class Program
     {
         var tasks = new List<Task>();
 
+        // Receive
+        if (args.Length == 3 || args.Length == 1)
+        {
+            int port = 0;
+
+            if (args.Length == 3)
+                port = int.Parse(args[2]);
+            if (args.Length == 1)
+                port = int.Parse(args[0]);
+
+            Console.WriteLine($"Receiving on {port}");
+            OscReceiver receiver = new OscReceiver(port);
+            receiver.Connect();
+
+
+
+            var t = Task.Run(() =>
+            {
+                while (true)
+                {
+                    var success = receiver.TryReceive(out var message);
+                    if (success)
+                        Console.WriteLine($"Receive: " + message);
+
+                }
+            });
+            tasks.Add(t);
+        }
+
         //Send
         if (args.Length >= 2)
         {
@@ -27,33 +56,6 @@ internal class Program
                     Console.WriteLine("Sending: " + seconds);
                     sender.Send(new OscMessage("/test", seconds));
                     await Task.Delay(500);
-                }
-            });
-            tasks.Add(t);
-        }
-
-        // Receive
-        if (args.Length == 3 || args.Length == 1)
-        {
-            int port = 0;
-
-            if (args.Length == 3)
-                port = int.Parse(args[2]);
-            if (args.Length == 1)
-                port = int.Parse(args[0]);
-
-            OscReceiver receiver = new OscReceiver(port);
-
-            Console.WriteLine($"Receiving on {port}");
-
-            var t = Task.Run(() =>
-            {
-                while (true)
-                {
-                    var success = receiver.TryReceive(out var message);
-                    if (success)
-                        Console.WriteLine($"Receive: " + message);
-
                 }
             });
             tasks.Add(t);
